@@ -1,0 +1,13 @@
+.membership-page {
+    display : flex;
+    flex-direction : column; /* 수직 정렬 */
+    width : 200px;
+    margin : 0 auto;
+}
+
+.membership-page input,
+.membership-page button {
+    margin-bottom: 10px; /* 요소 간격 설정 */
+    padding: 10px;
+    font-size: 16px;
+}
