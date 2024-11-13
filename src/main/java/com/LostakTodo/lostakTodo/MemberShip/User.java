@@ -4,6 +4,7 @@ import com.LostakTodo.lostakTodo.MemberShip.domain.AllowedDomainEmail;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +25,9 @@ public class User {
             message = "올바른 이메일 형식이 아닙니다.") // <- 해당 이메일 주소를 배열로 받는 커스텀 어노테이션 사용
     @NotBlank(message = "이메일은 필수 입력 항목입니다.")
     private String userEmail; //유저 이메일
-    
+
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$",
+            message = "비밀번호는 8~20자리의 영문자와 숫자 조합이어야 합니다.")
     @NotBlank(message = "비밀번호는 필수 입력 항목입니다.")
     private String password; // 비번
 }

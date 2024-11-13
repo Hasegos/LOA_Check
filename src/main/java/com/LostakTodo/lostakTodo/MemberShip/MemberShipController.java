@@ -2,6 +2,7 @@ package com.LostakTodo.lostakTodo.MemberShip;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @Controller 
 @RequiredArgsConstructor // 레포지토리 등록떄문에
 public class MemberShipController {
+
     private final MemberShipService memberShipService; // User 레포지토리 등록
+    private final PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/membership")
@@ -26,8 +29,12 @@ public class MemberShipController {
         try{
             if(bindingResult.hasErrors() || !user.getPassword().equals(password_Again)){
 
-                if(bindingResult.hasErrors()){
+                if(bindingResult.hasFieldErrors("userEmail")){
                     model.addAttribute("errorEmail", bindingResult.getFieldError("userEmail").getDefaultMessage());
+                }
+
+                if(bindingResult.hasFieldErrors("password")){
+                    model.addAttribute("errorPassword", bindingResult.getFieldError("password").getDefaultMessage());
                 }
                 // User에 적어놓은 @Email에있는 오류 메세지 출력
                 if(!user.getPassword().equals(password_Again)){
@@ -39,8 +46,11 @@ public class MemberShipController {
                 return "membership/membership.html";
             }
 
+
             else{
-                memberShipService.membership(user.getUserEmail(), user.getPassword());
+                var hashing = passwordEncoder.encode(user.getPassword());
+                System.out.println(hashing);
+                memberShipService.membership(user.getUserEmail(),hashing);
                 return "home/home.html";
             }
         }catch (Exception e){

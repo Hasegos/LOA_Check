@@ -32,7 +32,7 @@ public class LostArkAPI {
     private final RestTemplate restTemplate = new RestTemplate();
 
     private final LostArkApiService lostArkApiService;
-    private  final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public String getPlayerData(String playerId){
         

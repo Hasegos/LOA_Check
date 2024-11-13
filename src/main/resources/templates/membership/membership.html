@@ -19,11 +19,17 @@
     <div  class="membership-page" >
     <h4>회원 가입 페이지</h4>
     <form method="post" action="/membership">
+        <!-- 이메일 -->
         <input name="userEmail" placeholder="이메일">
         <div th:if="${errorEmail}" style="color : red;">
             <p th:text="${errorEmail}"></p>
         </div>
-        <input name="password" type="password" placeholder="비밀번호">
+        <!-- 비밀 번호 -->
+        <input name="password" type="password" placeholder="비밀번호 (8~20자 영문,숫자)">
+        <div th:if="${errorPassword}" style="color : red;">
+            <p th:text="${errorPassword}"></p>
+        </div>
+        <!-- 비밀 번호 확인 -->
         <input name="password_Again" type="password" placeholder="비밀번호 확인">
         <div th:if="${errorPassword_Again}" style="color : red;">
             <p th:text="${errorPassword_Again}"></p>
