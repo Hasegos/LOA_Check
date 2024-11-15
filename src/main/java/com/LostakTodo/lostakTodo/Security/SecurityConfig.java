@@ -1,5 +1,6 @@
 package com.LostakTodo.lostakTodo.Security;
 
+import com.LostakTodo.lostakTodo.JWT.JWTFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
@@ -40,8 +42,8 @@ public class SecurityConfig {
         );  // JWT를 사용할거기에  세션 데이터 생성 금지
 
         //로그인에 대해 유효한지 검사를 하기위해서 Filter 사용 -> Fillter 관련 클래스 따로뺴기
- 
-    
+
+        http.addFilterBefore(new JWTFilter(), ExceptionTranslationFilter.class);
 
 
         // 모든 경로에 대해 인증을 요구 X (만약 필요하면 URL에 주소넣기

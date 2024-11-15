@@ -34,8 +34,7 @@ public class UserDetailService implements UserDetailsService {
 
         List<GrantedAuthority> authorities = new ArrayList<>(); // 리스트 타입으로 권한 수정하게끔 생성
         authorities.add(new SimpleGrantedAuthority("일반유저")); // 관리자 권한도 따로 만들어줘야함
-        var user = new CustomUser(user_Information.getUserEmail(), user_Information.getPassword() , authorities ); // 권한도 추가
-        user.id = user_Information.getId();
+        var user = new CustomUser(user_Information.getUserEmail(), user_Information.getPassword(), authorities ); // 권한도 추가
 
         return user; // 권한 , 아이디 , 이메일 , 비번이 들어가있는 정보를 돌려줌
     }

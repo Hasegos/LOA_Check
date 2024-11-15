@@ -16,16 +16,16 @@
 
 
     <div th:replace="~{ nav/nav.html :: navbar}"></div>
-    <div  class="membership-page" >
+    <div class="membership-page" >
     <h4>회원 가입 페이지</h4>
     <form method="post" action="/membership">
         <!-- 이메일 -->
-        <input name="userEmail" placeholder="이메일">
+        <input name="userEmail" placeholder="이메일" id="userEmail">
         <div th:if="${errorEmail}" style="color : red;">
             <p th:text="${errorEmail}"></p>
         </div>
         <!-- 비밀 번호 -->
-        <input name="password" type="password" placeholder="비밀번호 (8~20자 영문,숫자)">
+        <input name="password"  placeholder="비밀번호 (8~20자 영문,숫자)" >
         <div th:if="${errorPassword}" style="color : red;">
             <p th:text="${errorPassword}"></p>
         </div>
@@ -35,6 +35,9 @@
             <p th:text="${errorPassword_Again}"></p>
         </div>
         <button type="submit">회원 가입</button>
+        <div th:if="${error}" style="color : red;">
+            <p th:text="${error}"></p>
+        </div>
         <a href="/login">뒤로가기</a>
     </form>
 
