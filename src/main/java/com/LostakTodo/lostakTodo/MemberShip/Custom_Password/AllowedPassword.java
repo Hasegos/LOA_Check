@@ -1,4 +1,4 @@
-package com.LostakTodo.lostakTodo.MemberShip.password;
+package com.LostakTodo.lostakTodo.MemberShip.Custom_Password;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

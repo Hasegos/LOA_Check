@@ -1,7 +1,7 @@
 package com.LostakTodo.lostakTodo.JWT;
 
-import com.LostakTodo.lostakTodo.MemberShip.User;
-import com.LostakTodo.lostakTodo.MemberShip.UserRepository;
+import com.LostakTodo.lostakTodo.MemberShip.UserData.User;
+import com.LostakTodo.lostakTodo.MemberShip.UserData.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,11 +20,11 @@ import java.util.Optional;
 // UserDetailsService 를 이용해서 user 에 대한 정보 수정
 public class UserDetailService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserRepository userDataRepository;
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 
-        Optional<User> result = userRepository.findAllByUserEmail(userEmail);
+        Optional<User> result = userDataRepository.findAllByUserEmail(userEmail);
          if(result.isEmpty()){
              throw new UsernameNotFoundException("그런 아이디 없습니다.");
          }
@@ -34,7 +34,7 @@ public class UserDetailService implements UserDetailsService {
 
         List<GrantedAuthority> authorities = new ArrayList<>(); // 리스트 타입으로 권한 수정하게끔 생성
         authorities.add(new SimpleGrantedAuthority("일반유저")); // 관리자 권한도 따로 만들어줘야함
-        var user = new CustomUser(user_Information.getUserEmail(), user_Information.getPassword(), authorities ); // 권한도 추가
+        var user = new CustomUser(user_Information.getUserEmail(), user_Information.getHashedPassword(), authorities ); // 권한도 추가
 
         return user; // 권한 , 아이디 , 이메일 , 비번이 들어가있는 정보를 돌려줌
     }

@@ -1,10 +1,9 @@
-package com.LostakTodo.lostakTodo.MemberShip.domain;
+package com.LostakTodo.lostakTodo.MemberShip.Custom_domain;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 
-import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
 public class AllowedDomainEmailValidator implements ConstraintValidator<AllowedDomainEmail, String> {

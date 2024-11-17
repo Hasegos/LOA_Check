@@ -1,4 +1,4 @@
-package com.LostakTodo.lostakTodo.MemberShip.domain;
+package com.LostakTodo.lostakTodo.MemberShip.Custom_domain;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
