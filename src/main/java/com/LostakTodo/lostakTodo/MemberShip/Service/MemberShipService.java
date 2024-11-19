@@ -41,8 +41,8 @@ public class MemberShipService {
 
     public void membership(String userEmail, String password, User userData){
 
-        // var hashing = passwordEncoder.encode(password); // 비밀번호 해싱
-        userData.setHashedPassword(password);
+        var hashing = passwordEncoder.encode(password); // 비밀번호 해싱
+        userData.setHashedPassword(hashing);
         userData.setUserEmail(userEmail);
         userDataRepository.save(userData);
     }

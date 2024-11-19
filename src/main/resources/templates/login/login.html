@@ -20,8 +20,8 @@
 
 <h4>로그인 페이지</h4>
 <form class="login-form">
-    <input name="userEmail" id="username">
-    <input name="password" type="password" id="password">
+    <input name="username" id="username">
+    <input name="password" id="password">
 </form>
     <div>
     <button onclick="loginJWT()">로그인</button> <!--로그인은 JWT 방식 / AJAX로 새로고침없이 진행-->
@@ -30,14 +30,23 @@
 </div>
 <script>
     function loginJWT(){
-        fetch('/login' , {
+        fetch('/loginJWT' , {
         method: 'POST',
+        credentials: 'include',
         headers : {'Content-Type' : 'application/json'},
         body : JSON.stringify ({
             userEmail : document.querySelector('#username').value,
             password : document.querySelector('#password').value
             })
-        }).then(r => r.text()).then((r)=> {console.log(r) })
+        })
+        .then(response => {
+            if(response.ok){
+              window.location.href = "home";
+            }
+            else{
+             console.error("로그인 실패");
+             }
+         });
     }
 </script>
 

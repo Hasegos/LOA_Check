@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
 @RequiredArgsConstructor
 // UserDetailsService 를 이용해서 user 에 대한 정보 수정
@@ -29,7 +28,7 @@ public class UserDetailService implements UserDetailsService {
              throw new UsernameNotFoundException("그런 아이디 없습니다.");
          }
         var user_Information =  result.get();
-        System.out.println(result.get()); // 해당 유저에대한 정보
+        // System.out.println(result.get()); // 해당 유저에대한 정보
 
 
         List<GrantedAuthority> authorities = new ArrayList<>(); // 리스트 타입으로 권한 수정하게끔 생성

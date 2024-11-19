@@ -23,6 +23,8 @@ public class JWTFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
     throws ServletException, IOException {
 
+        System.out.println("JWTFilter 시작");
+
         // 1. jwt 이름의 쿠키가 있으면 꺼내보기
         Cookie[] cookies =request.getCookies();
         if(cookies == null){
@@ -37,12 +39,14 @@ public class JWTFilter extends OncePerRequestFilter {
             }
         }
 
+
         // 2.유효기간 , 위조 여부 등 확인해야됨
         Claims claims;
 
         try {
-            claims = JWTUtil.extractToken(jwtCookie);            
+            claims = JWTUtil.extractToken(jwtCookie);
         }catch (Exception e){
+            System.out.println("JWT 검증 실패: " + e.getMessage());
             filterChain.doFilter(request,response); // 다음 필터 실행
             return;
         }
@@ -52,12 +56,14 @@ public class JWTFilter extends OncePerRequestFilter {
         
         var authorities = Arrays.stream(arr)
                 .map(a -> new SimpleGrantedAuthority(a)).toList();
-                
+
         var customUer = new CustomUser(
                 claims.get("userEmail").toString(),
                 "none", // 비밀번호는 민감한 정보라 가져오지않기
                 authorities
         );
+
+
         // 문제 없으면 auth 변수에 유저 정보를 넣어줌
         var authToken = new UsernamePasswordAuthenticationToken(
                 customUer, null , authorities // 여기에 더 넣고싶으면 CustomUser에넣어도됨
@@ -71,6 +77,10 @@ public class JWTFilter extends OncePerRequestFilter {
         // 최신화 정보를 저장
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
+
+
         filterChain.doFilter(request,response);
+
+        System.out.println("JWTFilter 종료");
     }
 }

@@ -8,7 +8,22 @@
 
     <div class="login">
         <button id="theme-toggle"><i class="fas fa-moon"></i></button> <!-- 다크 모드 변환 -->
-        <a href="/login">로그인</a> <!--로그인페이지 이동-->
+        <div th:if="${#authentication.principal != null and #authentication.principal != 'anonymousUser'}">
+            <!-- 로그인된 경우 -->
+            <button id="toggle-logout">
+                <h4 th:text="${#authentication.principal.username}"></h4>
+            </button>
+            <div id="logout-container" style="display : none; margin-top : 10px;">
+                <a id="logout-link" href="/logout" >로그아웃</a>
+            </div>
+        </div>
+
+        <div th:if="${#authentication.principal == null or #authentication.principal == 'anonymousUser'}">
+            <!-- 로그인되지 않은 경우 -->
+            <a href="/login">로그인</a>
+        </div>
+
+
     </div>
      <script>
          // 테마 색상을 변경
@@ -39,8 +54,25 @@
              else{
                 button.innerHTML = '<i class="fa-regular fa-sun fa-2x"></i>';
              }
-
-
          }
      </script>
+    <script>
+        // 로그인했을때 로그아웃 클릭했을 때 나타나게끔
+        // DOMContentLoaded 를 사용해서 html 다 업로드된후 사용
+        document.addEventListener("DOMContentLoaded" , function(){
+            const toggleButton = document.getElementById("toggle-logout");
+            const logoutContainer = document.getElementById("logout-container");
+
+            toggleButton.addEventListener("click", function() {
+                if(logoutContainer.style.display === "none"){
+                    logoutContainer.style.display = "block";
+                    console.log("버튼 클릭됨");
+                    console.log("현재 로그아웃 상태:", logoutContainer.style.display);
+                }
+                else{
+                    logoutContainer.style.display = "none";
+                }
+            });
+        });
+    </script>
 </nav>
