@@ -1,6 +1,7 @@
 package com.LostakTodo.lostakTodo.Security;
 
 import com.LostakTodo.lostakTodo.JWT.JWTFilter;
+import jakarta.servlet.http.Cookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,6 +51,15 @@ public class SecurityConfig {
         // 로그아웃 하면 로그인 서버로 보내기
         http.logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
+                // 로그 아웃 성공시
+                .addLogoutHandler(((request, response, authentication) -> {
+                    // jwt라고 적힌 쿠키값을 null    
+                    Cookie jwtCookie = new Cookie("jwt",null);
+                    jwtCookie.setHttpOnly(true); // HttpOnly 설정
+                    jwtCookie.setPath("/"); // 모든 경로에서 삭제
+                    jwtCookie.setMaxAge(0); // 즉시 만료
+                    response.addCookie(jwtCookie); // 응답에 쿠키 추가
+                }))
         );
 
         return http.build();

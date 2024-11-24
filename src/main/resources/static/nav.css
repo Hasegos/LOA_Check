@@ -31,7 +31,7 @@
 }
 /* LOA Check */
 .nav .loaCheck{
-    font-size : 25px;
+    font-size : 30px;
     line-height: 1;
 }
 /* 로그인 버튼 */
@@ -42,6 +42,7 @@
 
 /* 로그인 버튼 누르고 나오는 목록 색상 */
 .nav .login .block {
+    font-size : 16px;
     color: #121212;
 }
 
@@ -90,7 +91,7 @@
 
 /*  버튼 크기 */
 #toggle-logout_text {
-    font-size:20px;
+    font-size:18px;
 }
 
 

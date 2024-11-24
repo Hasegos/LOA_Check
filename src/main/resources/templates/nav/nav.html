@@ -15,9 +15,9 @@
             </button>
             <div id="logout-container" >
                 <ul id="logout-container_UL">
+                    <li><a class="block"  href="/api" >API 키 등록</a></li>
+                    <li><a class="block"  href="/" >등록된 캐릭터 삭제</a></li>
                     <li><a class="block" id="logout-link" href="/logout" >로그아웃</a></li>
-                    <li><a class="block"  href="/logout" >로그아웃라니라니</a></li>
-                    <li><a class="block"  href="/logout" >로그아웃</a></li>
                 </ul>
             </div>
         </div>
@@ -57,7 +57,7 @@
                 button.innerHTML = '<i class="fa-regular fa-sun fa-2x"></i>';
              }
          }
-     </script>
+    </script>
     <script>
         // 로그인했을때 로그아웃 클릭했을 때 나타나게끔
         // DOMContentLoaded 를 사용해서 html 다 업로드된후 사용
@@ -68,9 +68,10 @@
 
             toggleButton.addEventListener("click", function() {
                 if(logoutContainer.style.display === "none"){
+                    // 상단에 뜨는 넓이 크기는 로그인 이메일 넓이 만큼
                     const textWidth = toggleLogoutText.offsetWidth;
                     logoutContainer.style.width = textWidth + "px";
-
+                    // block 형태로 보여주기
                     logoutContainer.style.display = "block";
                 }
                 else{

@@ -30,7 +30,7 @@ public class User {
     // @Transient 를 사용해서 JPA 에서 직접적으로 서버에 관리 안하게끔 설정 즉, 입력값만 가져와서 확인해보고
     // 실질적인 데이터는 hashedPassword 에 저장
 
-    @Transient 
+    @Transient
     @AllowedPassword(message = "비밀번호는 8~20자리의 영문자와 숫자 조합이어야 합니다. ") // false일 때 사용
     @NotBlank(message = "비밀번호는 필수 입력 항목입니다.")
     private String rawPassword; // 입력된 원본 비번
