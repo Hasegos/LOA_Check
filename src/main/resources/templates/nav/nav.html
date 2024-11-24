@@ -1,20 +1,24 @@
 <nav class="nav" th:fragment="navbar">
+    <link href="nav.css" rel="stylesheet">
     <a class="loaCheck" href="/home">LOA Check</a>
     <a href="/homework">숙제</a>
     <a href="/friend">친구</a>
     <a href="/schedule">일정</a>
     <a href="cube">큐브</a>
     <a href="/search">실시간 검색순위</a>
-
     <div class="login">
         <button id="theme-toggle"><i class="fas fa-moon"></i></button> <!-- 다크 모드 변환 -->
-        <div th:if="${#authentication.principal != null and #authentication.principal != 'anonymousUser'}">
+        <div id="email-container" th:if="${#authentication.principal != null and #authentication.principal != 'anonymousUser'}">
             <!-- 로그인된 경우 -->
             <button id="toggle-logout">
-                <h4 th:text="${#authentication.principal.username}"></h4>
+                <h4 th:text="${#authentication.principal.username}" id="toggle-logout_text"></h4>
             </button>
-            <div id="logout-container" style="display : none; margin-top : 10px;">
-                <a id="logout-link" href="/logout" >로그아웃</a>
+            <div id="logout-container" >
+                <ul id="logout-container_UL">
+                    <li><a class="block" id="logout-link" href="/logout" >로그아웃</a></li>
+                    <li><a class="block"  href="/logout" >로그아웃라니라니</a></li>
+                    <li><a class="block"  href="/logout" >로그아웃</a></li>
+                </ul>
             </div>
         </div>
 
@@ -22,8 +26,6 @@
             <!-- 로그인되지 않은 경우 -->
             <a href="/login">로그인</a>
         </div>
-
-
     </div>
      <script>
          // 테마 색상을 변경
@@ -62,12 +64,14 @@
         document.addEventListener("DOMContentLoaded" , function(){
             const toggleButton = document.getElementById("toggle-logout");
             const logoutContainer = document.getElementById("logout-container");
+            const toggleLogoutText = document.getElementById("toggle-logout_text");
 
             toggleButton.addEventListener("click", function() {
                 if(logoutContainer.style.display === "none"){
+                    const textWidth = toggleLogoutText.offsetWidth;
+                    logoutContainer.style.width = textWidth + "px";
+
                     logoutContainer.style.display = "block";
-                    console.log("버튼 클릭됨");
-                    console.log("현재 로그아웃 상태:", logoutContainer.style.display);
                 }
                 else{
                     logoutContainer.style.display = "none";
