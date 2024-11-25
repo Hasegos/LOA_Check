@@ -4,6 +4,7 @@ package com.LostakTodo.lostakTodo.API;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,20 +20,24 @@ import java.util.List;
 // 로스트아크 API 키 가져오기
 @Service
 @RequiredArgsConstructor
+
 public class LostArkAPI {
 
-    // application 에 저장된 설정값을 하드 코딩없이 가져올수있게 설정해주는 어노테이션
-    @Value("${game.api.key}")
     private String apiKey;
-
+    // application 에 저장된 설정값을 하드 코딩없이 가져올수있게 설정해주는 어노테이션
     @Value("${game.api.url}")
     private String apiUrl;
-    
+
+    // 이거 하나만 저장하기위해서 사용
+    public void setApiKey(String apiKey){
+        this.apiKey = apiKey;
+    }
+
+
     // HTTP 메서드(GET, POST, PUT, DELETE 등) 처리할수있게 해줌
     private final RestTemplate restTemplate = new RestTemplate();
 
     private final LostArkApiService lostArkApiService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public String getPlayerData(String playerId){
         

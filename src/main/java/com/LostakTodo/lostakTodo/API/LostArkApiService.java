@@ -10,6 +10,7 @@ import java.util.List;
 @Service
 public class LostArkApiService {
 
+    // api
     private  final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<String> processCharacterInfo(String json) {
@@ -25,8 +26,6 @@ public class LostArkApiService {
                 String detail = "캐릭터 이름 : " + characterName + ", 레벨 :" + level;
                 characterLevels.add(detail);
             }
-
-
             return characterLevels;
         }catch (Exception e){
             e.printStackTrace();

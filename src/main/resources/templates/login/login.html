@@ -16,16 +16,13 @@
 <div th:replace="~{ nav/nav.html :: navbar}"></div>
 
 <div class="login-page">
-
-<h4>로그인 페이지</h4>
-<form class="login-form">
-    <input name="username" id="username" placeholder="이메일">
-    <input name="password" id="password" placeholder="비밀번호">
-</form>
-    <div>
-    <button onclick="loginJWT()">로그인</button> <!--로그인은 JWT 방식 / AJAX로 새로고침없이 진행-->
-    <a href="/membership">회원 가입</a>
-    </div>
+    <h4>로그인 페이지</h4>
+    <form class="login-form">
+        <input name="username" id="username" placeholder="이메일">
+        <input name="password" id="password" placeholder="비밀번호">
+    </form>
+        <button onclick="loginJWT()">로그인</button> <!--로그인은 JWT 방식 / AJAX로 새로고침없이 진행-->
+        <a href="/membership">회원 가입</a>
 </div>
 <script>
     function loginJWT(){
