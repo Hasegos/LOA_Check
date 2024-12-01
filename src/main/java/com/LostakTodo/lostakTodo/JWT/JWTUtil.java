@@ -41,7 +41,7 @@ public class JWTUtil {
                 .claim("userEmail" , user.getUsername())
                 .claim("authorities",authorities) // 문자만 입력가능
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 10000)) // jwt 생존시간 ms으로 계산함
+                .expiration(new Date(System.currentTimeMillis() + 60 * 1000 * 15)) // jwt 생존시간 ms으로 계산함
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
         return jwt;
