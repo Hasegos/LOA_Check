@@ -1,11 +1,15 @@
 package com.LostakTodo.lostakTodo.MemberShip.UserData;
 
+import com.LostakTodo.lostakTodo.API.UserApiName;
 import com.LostakTodo.lostakTodo.MemberShip.Custom_domain.AllowedDomainEmail;
 import com.LostakTodo.lostakTodo.MemberShip.Custom_Password.AllowedPassword;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -36,4 +40,7 @@ public class User {
     private String rawPassword; // 입력된 원본 비번
 
     private String hashedPassword; // 해싱된 비번
+
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserApiName> apiNames = new ArrayList<>();
 }

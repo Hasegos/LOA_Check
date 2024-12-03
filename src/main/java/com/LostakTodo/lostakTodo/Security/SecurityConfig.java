@@ -59,6 +59,11 @@ public class SecurityConfig {
                     jwtCookie.setPath("/"); // 모든 경로에서 삭제
                     jwtCookie.setMaxAge(0); // 즉시 만료
                     response.addCookie(jwtCookie); // 응답에 쿠키 추가
+
+                    if(authentication != null && authentication.getName() != null){
+
+                    }
+
                 }))
         );
 

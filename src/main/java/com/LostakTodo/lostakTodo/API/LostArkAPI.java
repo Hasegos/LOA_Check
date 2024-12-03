@@ -1,21 +1,22 @@
 package com.LostakTodo.lostakTodo.API;
 
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.LostakTodo.lostakTodo.MemberShip.UserData.User;
+import com.LostakTodo.lostakTodo.MemberShip.UserData.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Optional;
 
 // 로스트아크 API 키 가져오기
 @Service
@@ -23,14 +24,35 @@ import java.util.List;
 
 public class LostArkAPI {
 
-    private String apiKey;
+    private final UserApiNameRepository userApiNameRepository;
+    private final UserRepository userRepository;
     // application 에 저장된 설정값을 하드 코딩없이 가져올수있게 설정해주는 어노테이션
     @Value("${game.api.url}")
     private String apiUrl;
 
+    private String apiKey;
+
+
     // 이거 하나만 저장하기위해서 사용
-    public void setApiKey(String apiKey){
-        this.apiKey = apiKey;
+
+    public void setApiKey(String apiKey, Authentication auth, String playerId){
+
+        try {
+            Optional<User> result = userRepository.findAllByUserEmail(auth.getName());
+            User user = result.get();
+
+            UserApiName userApiName = new UserApiName();
+            userApiName.setUser(user);
+
+            userApiName.setApiKey(apiKey);
+            userApiName.setUserName(playerId);
+
+            userApiNameRepository.save(userApiName);
+
+            this.apiKey = apiKey;
+        }catch (Exception e){
+            System.out.println("에러 메세지" + e.getMessage());
+        }
     }
 
 
