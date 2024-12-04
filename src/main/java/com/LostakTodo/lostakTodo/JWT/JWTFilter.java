@@ -39,7 +39,6 @@ public class JWTFilter extends OncePerRequestFilter {
             }
         }
 
-
         // 2.유효기간 , 위조 여부 등 확인해야됨
         Claims claims;
 
@@ -63,7 +62,6 @@ public class JWTFilter extends OncePerRequestFilter {
                 authorities
         );
 
-
         // 문제 없으면 auth 변수에 유저 정보를 넣어줌
         var authToken = new UsernamePasswordAuthenticationToken(
                 customUer, null , authorities // 여기에 더 넣고싶으면 CustomUser에넣어도됨
@@ -76,8 +74,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 최신화 정보를 저장
         SecurityContextHolder.getContext().setAuthentication(authToken);
-
-
 
         filterChain.doFilter(request,response);
 

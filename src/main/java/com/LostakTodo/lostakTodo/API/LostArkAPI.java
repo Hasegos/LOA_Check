@@ -11,7 +11,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -31,19 +30,19 @@ public class LostArkAPI {
     private String apiUrl;
 
     private String apiKey;
-
-
-    // 이거 하나만 저장하기위해서 사용
-
+   
+    // api 키와 플레리어 닉네임 저장
     public void setApiKey(String apiKey, Authentication auth, String playerId){
 
         try {
+            // User 에 있는 정보를 찾기
             Optional<User> result = userRepository.findAllByUserEmail(auth.getName());
             User user = result.get();
-
+            
+            // Api 테이블에 user 정보를 외래참조로 저장 후에 api 키와 닉네임 저장
             UserApiName userApiName = new UserApiName();
-            userApiName.setUser(user);
 
+            userApiName.setUser(user);
             userApiName.setApiKey(apiKey);
             userApiName.setUserName(playerId);
 
@@ -55,14 +54,14 @@ public class LostArkAPI {
         }
     }
 
-
     // HTTP 메서드(GET, POST, PUT, DELETE 등) 처리할수있게 해줌
     private final RestTemplate restTemplate = new RestTemplate();
 
     private final LostArkApiService lostArkApiService;
 
-    public String getPlayerData(String playerId){
-        
+    public String getPlayerData(String playerId,String apiKey){
+
+        this.apiKey = apiKey;
         // UriComponentsBuilder.fromHttpUrl 를사용해서 기본적인 URL에 동적으로 경로를 추가
         // 해당 경로는 로스트아크 api키 사용법에 있음
         String url = UriComponentsBuilder.fromHttpUrl(apiUrl + "/characters/" + playerId + "/siblings")
@@ -86,7 +85,5 @@ public class LostArkAPI {
             e.printStackTrace();
             return "오류발생";
         }
-
     }
-
 }

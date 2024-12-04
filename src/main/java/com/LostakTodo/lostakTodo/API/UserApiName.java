@@ -13,8 +13,10 @@ public class UserApiName {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // api 키 길이 천글자 이하로 설정
     @Column(length = 1000)
     private String apiKey;
+
     private String userName;
 
     @ManyToOne(fetch = FetchType.LAZY)
