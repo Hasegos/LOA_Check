@@ -15,7 +15,7 @@ public class homeController {
     @GetMapping("/home")
     String home( HttpServletRequest request,Authentication authentication){
 
-        System.out.println(authentication.getPrincipal());
+
 
         return "/home/home.html";
     }

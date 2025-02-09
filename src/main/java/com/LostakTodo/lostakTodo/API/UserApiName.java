@@ -18,7 +18,8 @@ public class UserApiName {
     private String apiKey;
 
     private String userName;
-
+    
+    // User 데이터랑 연동
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

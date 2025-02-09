@@ -1,0 +1,9 @@
+/* 캐릭터 이미지 정렬 */
+.character-container {
+    display : flex; /* 이미지 오른쪽으로 정렬 */
+    flex-warp : warp;
+    gap : 20px; /* 간격차이 */
+    justify-content : flex-start; /* 시작지점으로 지정 */
+}
+
+

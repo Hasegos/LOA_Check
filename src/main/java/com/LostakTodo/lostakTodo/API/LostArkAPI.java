@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +30,7 @@ public class LostArkAPI {
     @Value("${game.api.url}")
     private String apiUrl;
 
-    private String apiKey;
-   
+
     // api 키와 플레리어 닉네임 저장
     public void setApiKey(String apiKey, Authentication auth, String playerId){
 
@@ -47,8 +47,6 @@ public class LostArkAPI {
             userApiName.setUserName(playerId);
 
             userApiNameRepository.save(userApiName);
-
-            this.apiKey = apiKey;
         }catch (Exception e){
             System.out.println("에러 메세지" + e.getMessage());
         }
@@ -59,9 +57,9 @@ public class LostArkAPI {
 
     private final LostArkApiService lostArkApiService;
 
-    public String getPlayerData(String playerId,String apiKey){
+    // 유저 통합 정보
+    public List<String> getPlayerData(String playerId, String apiKey , Authentication auth){
 
-        this.apiKey = apiKey;
         // UriComponentsBuilder.fromHttpUrl 를사용해서 기본적인 URL에 동적으로 경로를 추가
         // 해당 경로는 로스트아크 api키 사용법에 있음
         String url = UriComponentsBuilder.fromHttpUrl(apiUrl + "/characters/" + playerId + "/siblings")
@@ -77,13 +75,14 @@ public class LostArkAPI {
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-            List<String> characterInfo = lostArkApiService.processCharacterInfo(response.getBody());
+            /* 캐릭터 정보를 List 형태로 넘겨주기 (html에서 타임리프로 쪼개서 정보를 출력) */
+            List<String> characterInfo = lostArkApiService.processCharacterInfo(response.getBody() ,auth);
 
-            return String.join("\n", characterInfo);
-
+            return characterInfo;
         }catch(Exception e){
             e.printStackTrace();
-            return "오류발생";
+            return Collections.singletonList("해당 캐릭터 정보가 없습니다.");
         }
     }
+
 }

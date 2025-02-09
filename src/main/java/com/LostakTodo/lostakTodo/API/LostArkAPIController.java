@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -20,65 +22,67 @@ public class LostArkAPIController {
     private final UserApiNameRepository userApiNameRepository;
     private final UserRepository userRepository;
 
-    // DB에 저장된 데이터 이용하기 (프로그램 실행했을경우 다른 호스팅이나 get 을 받았을때 해당값을 까먹음)
-    private String playerId;
-    private String ApiKey;
-
     @GetMapping("/api")
     String API(){
         return "API/API.html";
     }
 
-    // homework 관련 모음 (post 뿐만아니라 get요청시에도 내용나오게끔 수정)
+    // homework(숙제) 를 눌렀을시 요청
     @GetMapping("/homework")
     String homework(Model model, Authentication auth){
 
-        Optional<User> result = userRepository.findAllByUserEmail(auth.getName());
-
-        User User_Information = result.get(); // 유저 정보 가져오기
-
-        // 유저 정보에있는 아이디와 api 에 있는 외래참조 키를 이용해서 정보찾기
-        Optional<UserApiName> Api_Information = userApiNameRepository.findAllByUserId(User_Information.getId());
-
-        playerId = Api_Information.get().getUserName();
-        ApiKey = Api_Information.get().getApiKey();
-
-        if(playerId == null){
-            System.out.println("API 키 지금없음");
+        try {
+            // 닉네임
+            String playerId = get_APi(auth).get().getUserName();
+            // api 키
+            String ApiKey = get_APi(auth).get().getApiKey();
+            
+            // 만약 api 가 올바르지않을 경우 DB에 저장 X
+            if (lostArkAPI.getPlayerData(playerId, ApiKey,auth).equals("오류발생")) {
+                System.out.println("API 키가 올바르지않습니다.");
+                return "home/home.html";
+            } else {
+                model.addAttribute("playerId", lostArkAPI.getPlayerData(playerId, ApiKey,auth));
+                return "homework/homework.html";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
             return "home/home.html";
         }
-        else {
-            System.out.println(lostArkAPI.getPlayerData(playerId,ApiKey));
-            model.addAttribute("playerId", lostArkAPI.getPlayerData(playerId,ApiKey));
-            return "homework/homework.html";
-        }
-    }
 
+    }
+    // API 키 등록시 DB에 등록
     @PostMapping("/homework")
     String API_Get(@RequestParam String API_key, String playerId, Model model, Authentication auth){
 
-        Optional<User> result = userRepository.findAllByUserEmail(auth.getName());
-
-        User User_Information = result.get(); // 유저 정보 가져오기
-
-        Optional<UserApiName> Api_Information = userApiNameRepository.findAllByUserId(User_Information.getId());
-
-        if(!Api_Information.isPresent()){
+        // 존재하지않을 경우
+        if(!get_APi(auth).isPresent()){
             lostArkAPI.setApiKey(API_key, auth, playerId);
-
-            model.addAttribute("playerId",lostArkAPI.getPlayerData(playerId,API_key));
+            model.addAttribute("playerId",lostArkAPI.getPlayerData(playerId,API_key,auth));
             return "homework/homework.html";
         }
         // 이미 존재할경우 얻데이트
-        if(Api_Information.isPresent()){
-
-            UserApiName remove = Api_Information.get();
+        if(get_APi(auth).isPresent()){
+            UserApiName remove = get_APi(auth).get();
             userApiNameRepository.delete(remove);
-
         }
+        
         lostArkAPI.setApiKey(API_key, auth, playerId);
-
-        model.addAttribute("playerId",lostArkAPI.getPlayerData(playerId,API_key));
+        List<String> player = lostArkAPI.getPlayerData(playerId,API_key,auth);
+        System.out.println(player);
+        model.addAttribute("playerId",player);
         return "homework/homework.html";
+    }
+    
+    // DB에 저장된 Api 키 가져오는 함수
+    public Optional<UserApiName> get_APi(Authentication auth){
+        
+        Optional<User> result = userRepository.findAllByUserEmail(auth.getName());
+        User User_Information = result.get(); // 유저 정보 가져오기
+        // 이후에 유저 정보중에 id를 이용해서 api, 닉네임 정보 저장 테이블 찾기
+        Optional<UserApiName> Api_Information = userApiNameRepository.findAllByUserId(User_Information.getId());
+
+        return Api_Information;
     }
 }

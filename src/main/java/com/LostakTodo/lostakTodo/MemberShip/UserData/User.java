@@ -35,7 +35,7 @@ public class User {
     // 실질적인 데이터는 hashedPassword 에 저장
 
     @Transient
-    @AllowedPassword(message = "비밀번호는 8~20자리의 영문자와 숫자 조합이어야 합니다. ") // false일 때 사용
+    @AllowedPassword(message = "비밀번호는 8~20자리의 영문자와 숫자 조합이어야 합니다. ") // 커스텀 어노테이션 사용
     @NotBlank(message = "비밀번호는 필수 입력 항목입니다.")
     private String rawPassword; // 입력된 원본 비번
 
