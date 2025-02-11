@@ -7,10 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
@@ -41,7 +43,7 @@ public class SecurityConfig {
             // JWT를 사용할거기에  세션 데이터 생성 금지
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             //로그인에 대해 유효한지 검사를 하기위해서 Filter 사용
-            .addFilterBefore(new JWTFilter(), ExceptionTranslationFilter.class)
+            .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class)
             // 모든 경로에 대해 인증을 요구 X (만약 필요하면 URL에 주소넣기
             .authorizeHttpRequests(auth ->
                 auth.requestMatchers("/**").permitAll().
@@ -59,6 +61,8 @@ public class SecurityConfig {
                     jwtCookie.setPath("/"); // 모든 경로에서 삭제
                     jwtCookie.setMaxAge(0); // 즉시 만료
                     response.addCookie(jwtCookie); // 응답에 쿠키 추가
+
+                    SecurityContextHolder.clearContext();
                 }))
         );
 

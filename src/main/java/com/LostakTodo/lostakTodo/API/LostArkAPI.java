@@ -26,6 +26,7 @@ public class LostArkAPI {
 
     private final UserApiNameRepository userApiNameRepository;
     private final UserRepository userRepository;
+
     // application 에 저장된 설정값을 하드 코딩없이 가져올수있게 설정해주는 어노테이션
     @Value("${game.api.url}")
     private String apiUrl;
@@ -62,7 +63,8 @@ public class LostArkAPI {
 
         // UriComponentsBuilder.fromHttpUrl 를사용해서 기본적인 URL에 동적으로 경로를 추가
         // 해당 경로는 로스트아크 api키 사용법에 있음
-        String url = UriComponentsBuilder.fromHttpUrl(apiUrl + "/characters/" + playerId + "/siblings")
+        // 캐릭터 이름
+        String urlPlayerId = UriComponentsBuilder.fromHttpUrl(apiUrl + "/characters/" + playerId + "/siblings")
                 .toUriString();
         // 인증정보나 기타 요청에 필요한 정보를 전달하기위해서
         // HTTP 헤더는 클라이언트와 서버 간의 요청과 응답에 추가적인 정보 제공(특정정보를 헤더에 포함가능)
@@ -74,9 +76,12 @@ public class LostArkAPI {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
-            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            ResponseEntity<String> response_playerId = restTemplate.exchange(urlPlayerId, HttpMethod.GET, entity, String.class);
+
             /* 캐릭터 정보를 List 형태로 넘겨주기 (html에서 타임리프로 쪼개서 정보를 출력) */
-            List<String> characterInfo = lostArkApiService.processCharacterInfo(response.getBody() ,auth);
+            List<String> characterInfo = lostArkApiService.processCharacterInfo(response_playerId.getBody() ,auth);
+
+            System.out.println(characterInfo);
 
             return characterInfo;
         }catch(Exception e){

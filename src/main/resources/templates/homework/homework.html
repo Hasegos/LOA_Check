@@ -19,14 +19,13 @@
 
 <!-- 캐릭터 이미지 와 정보를 API로 부터 받아서 출력 -->
 <div class="character-container">
-    <div th:each = "line : ${playerId} ">
+    <div th:each = "line : ${playerId} " class="character-image-container">
 
-        <p th:text ="${#strings.substringBefore(line,'프로필 이미지')}"></p>
+        <p th:utext ="${#strings.substringBefore(line,'프로필 이미지')}" class="character-text"></p>
 
-        <div th:if="${#strings.contains(line,'프로필 이미지')}">
+        <div th:if="${#strings.contains(line,'프로필 이미지')}"  >
             <img th:src="${#strings.substringAfter(line, '프로필 이미지')}"
-             alt="캐릭터 프로필 이미지"
-             style="width:200px; height:auto;">
+             alt="캐릭터 프로필 이미지" class="character-image" >
 
         </div>
     </div>
