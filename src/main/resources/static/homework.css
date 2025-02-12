@@ -3,35 +3,37 @@
     display : flex; /* 이미지 오른쪽으로 정렬 */
     flex-warp : warp;
     gap : 20px; /* 간격차이 */
-    justify-content : flex-start; /* 시작지점으로 지정 */
+    justify-content : center; /* 시작지점으로 지정 */
 }
 
 .character-image-container{
-   width : 300px;
-   height : 400px;
    overflow : hidden;
    position : relative;
-   display : flex;
-   align-items : center;
-   justify-content : center;
 }
 .character-text {
-    position:absolute;
-    top: 10px; /* 아래쪽에 배치 */
-        left: 10px;
-        background-color: rgba(0, 0, 0, 0.5); /* 배경 투명 검은색 */
-        color: white; /* 글자 색 */
-        padding: 5px 10px;
-        font-size: 14px;
-        border-radius: 5px;
-        text-align: left;
-
+    padding : 5px;
+    background-color: rgba(0, 0, 0, 0.5); /* 배경 투명 검은색 */
+    color: white; /* 글자 색 */
+    font-size: 14px;
+    border-radius: 5px;
+    text-align: left;
+}
+.character-image {
+    width : 200px;
+}
+/* 체크 박스 진행도 체크 */
+.checkbox-container {
+    display : flex;
+    width : 200px
 }
 
-
-
-.character-image {
-    width : 100%;
-    height : 80%;
-    object-position : cover;
+.checkbox {
+    appearance : none;
+    margin: 0;
+    padding : 0;
+    width : 50px;
+    height : 25px;
+    border-style : solid;
+    border-width : 2px;
+    border-color : #e9ecef;
 }
