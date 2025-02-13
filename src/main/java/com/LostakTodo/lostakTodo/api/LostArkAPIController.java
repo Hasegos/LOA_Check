@@ -1,7 +1,5 @@
-package com.LostakTodo.lostakTodo.API;
+package com.LostakTodo.lostakTodo.api;
 
-import com.LostakTodo.lostakTodo.MemberShip.UserData.User;
-import com.LostakTodo.lostakTodo.MemberShip.UserData.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,6 +29,7 @@ public class LostArkAPIController {
     String homework(Model model, Authentication auth){
 
         try {
+            // 유저 정보 전체 불러내기
             UserApiName userApiInformation = lostArkApiService.get_APi(auth).get();
             // 닉네임
             String playerId = userApiInformation.getUserName();

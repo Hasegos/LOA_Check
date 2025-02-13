@@ -1,4 +1,4 @@
-package com.LostakTodo.lostakTodo.API;
+package com.LostakTodo.lostakTodo.api;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;

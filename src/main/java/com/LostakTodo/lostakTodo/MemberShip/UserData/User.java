@@ -1,6 +1,6 @@
 package com.LostakTodo.lostakTodo.MemberShip.UserData;
 
-import com.LostakTodo.lostakTodo.API.UserApiName;
+import com.LostakTodo.lostakTodo.api.UserApiName;
 import com.LostakTodo.lostakTodo.MemberShip.Custom_domain.AllowedDomainEmail;
 import com.LostakTodo.lostakTodo.MemberShip.Custom_Password.AllowedPassword;
 import jakarta.persistence.*;

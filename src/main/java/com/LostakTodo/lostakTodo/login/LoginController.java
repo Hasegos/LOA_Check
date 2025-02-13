@@ -1,6 +1,5 @@
 package com.LostakTodo.lostakTodo.login;
 
-import com.LostakTodo.lostakTodo.JWT.CustomUser;
 import com.LostakTodo.lostakTodo.JWT.JWTUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -8,21 +7,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.IOException;
 import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-public class loginController {
+public class LoginController {
 
     // 로그인을 자동으로 시켜주기위해서
     private final AuthenticationManagerBuilder authenticationManagerBuilder;

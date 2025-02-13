@@ -1,4 +1,4 @@
-package com.LostakTodo.lostakTodo.API;
+package com.LostakTodo.lostakTodo.api;
 
 import com.LostakTodo.lostakTodo.MemberShip.UserData.User;
 import com.LostakTodo.lostakTodo.MemberShip.UserData.UserRepository;
@@ -19,8 +19,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-
 
 @Service
 @RequiredArgsConstructor
@@ -40,45 +38,41 @@ public class LostArkApiService {
 
 
     public List<String> processCharacterInfo(String jsonPlayerId, Authentication auth) {
-        List<String> characterLevels = new ArrayList<>();
+        List<String> charactersCollection = new ArrayList<>();
 
-//        Optional<User> result = userRepository.findAllByUserEmail(auth.getName());
-//        User User_Information = result.get(); // 유저 정보 가져오기
-//
-//        // 이후에 유저 정보중에 id를 이용해서 api, 닉네임 정보 저장 테이블 찾기
-//        Optional<UserApiName> Api_Information = userApiNameRepository.findAllByUserId(User_Information.getId());
-        // 함수로 한번만 불러와도 문제없게끔
-        Optional<UserApiName> Api_Information = get_APi(auth);
-        String APIKey = Api_Information.get().getApiKey(); // API 키
-        String UserName_Rep = Api_Information.get().getUserName(); // 유저가 저장한 대표캐릭
+        // 유저가 가지고있는 API 키 불러오기
+        Optional<UserApiName> userInformation = get_APi(auth);
+        String userAPIKey = userInformation.get().getApiKey(); // API 키
+        String UserCharacterDaepyoName = userInformation.get().getUserName(); // 유저가 저장한 대표캐릭
 
         try{
             JsonNode rootNode = objectMapper.readTree(jsonPlayerId);
 
-            String UserName_Rep_Server = "";
-            String server , characterName , level;
+            String UserCharacterDaepyoServer = "";
+            String characterServer , characterName , level;
 
             for(JsonNode characterNode : rootNode){
-                if(characterNode.path("CharacterName").asText().equals(UserName_Rep)){
-                    UserName_Rep_Server = characterNode.path("ServerName").asText();
+                if(characterNode.path("CharacterName").asText().equals(UserCharacterDaepyoName)){
+                    UserCharacterDaepyoServer = characterNode.path("ServerName").asText();
                     break;
                 }
             }
 
             for(JsonNode characterNode : rootNode){
                 // 서버가 같은지 먼저 거르고 나서 후에 데이터 가져오기
-                server = characterNode.path("ServerName").asText();
+                characterServer = characterNode.path("ServerName").asText();
                 // String lastLogin = characterNode.path("LastLogin").asText(); // 마지막 로그인 시점
 
                 // 대표 캐릭터의 해당되는 서버 캐릭터만 가져오기
-                if(!UserName_Rep_Server.equals(server)){
+                if(!UserCharacterDaepyoServer.equals(characterServer)){
                     System.out.println("대표 캐릭터의 서버와 맞지않습니다.");
                     continue;
                 }
-
+                
                 characterName = characterNode.path("CharacterName").asText();
                 level = characterNode.path("CharacterLevel").asText();
-                String image = getCharacterImage(characterName, APIKey); // DB에 저장된 api 키 가져오기
+                // API 키와 캐릭터 이름 넘겨주고 이미지 가져오기
+                String image = getCharacterImage(characterName, userAPIKey);
 
                 // 레벨 낮으면 이미지조차도 안불러와줘짐
                 if(Integer.parseInt(level) <= 10 || image == null || image.isEmpty()){
@@ -87,23 +81,25 @@ public class LostArkApiService {
                 }
 
                 // 서버이름 , 캐릭터 이름 , 레벨 , 이미지 보내기
-                String detail = "서버 : " + server +
+                String characterInformation = "서버 : " + characterServer +
                 "\n캐릭터 이름 : " +  characterName +
                 "\n레벨 : " + level +
                 "\n프로필 이미지" + image;
-                detail = detail.replace("\n", "<br>");
-                System.out.println(detail);
-                characterLevels.add(detail);
+                // 이때 "\n"는 html 에서 문자로 인식하기에 띄워쓰기가 안됨으로 <br>태그로 변경
+                characterInformation = characterInformation.replace("\n", "<br>");
+
+                charactersCollection.add(characterInformation);
             }
-            return characterLevels;
+            return charactersCollection;
         }catch (Exception e){
             e.printStackTrace();
-            characterLevels.add("오류 처리 중 문제발생");
-            return characterLevels;
+            charactersCollection.add("오류 처리 중 문제발생");
+            return charactersCollection;
         }
     }
 
     // 캐릭터의 이미지 가져오기
+    // 비동기 처리, 캐싱작업
     @Async
     @Cacheable(value = "CharacterImage", key = "#playerId")
     public String getCharacterImage(String playerId, String apiKey) {
@@ -119,7 +115,7 @@ public class LostArkApiService {
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
             JsonNode rootNode = objectMapper.readTree(response.getBody());
             String imageURL = rootNode.path("CharacterImage").asText();
-            // 캐릭터 이미지
+            // 캐릭터 이미지 주소
             return imageURL;
         }catch (Exception e) {
             e.printStackTrace();
@@ -129,12 +125,12 @@ public class LostArkApiService {
 
     // DB에 저장된 Api 키 가져오는 함수
     public Optional<UserApiName> get_APi(Authentication auth){
-
-        Optional<User> result = userRepository.findAllByUserEmail(auth.getName());
-        User User_Information = result.get(); // 유저 정보 가져오기
+        
+        // 유저가 로그인한 정보의 이메일 정보로 유저 정보 찾기
+        Optional<User> userLine = userRepository.findAllByUserEmail(auth.getName());
         // 이후에 유저 정보중에 id를 이용해서 api, 닉네임 정보 저장 테이블 찾기
-        Optional<UserApiName> Api_Information = userApiNameRepository.findAllByUserId(User_Information.getId());
+        Optional<UserApiName> userInformation = userApiNameRepository.findAllByUserId(userLine.get().getId());
 
-        return Api_Information;
+        return userInformation;
     }
 }

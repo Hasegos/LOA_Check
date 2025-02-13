@@ -1,4 +1,4 @@
-package com.LostakTodo.lostakTodo.API;
+package com.LostakTodo.lostakTodo.api;
 
 import com.LostakTodo.lostakTodo.MemberShip.UserData.User;
 import jakarta.persistence.*;
