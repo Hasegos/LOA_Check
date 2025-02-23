@@ -1,0 +1,117 @@
+/* 캐릭터 이미지 정렬 */
+.character {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 반응형 */
+    gap: 20px;
+    justify-content: center;
+    max-width: 1400px; /* 최대 너비 제한 */
+    margin: 0 auto; /* 가운데 정렬 */
+
+}
+/* 반응형: 화면 크기가 작아질 때 한 줄에 한 개씩 표시 */
+@media (max-width: 1024px) {
+    .character {
+        grid-template-columns: repeat(3, 1fr); /* 태블릿에서는 3개씩 */
+    }
+    .character-container:nth-child(n+7) {
+        grid-column: span 3; /* 두 번째 줄로 이동 */
+    }
+    .character-container:nth-child(n+13) {
+        grid-column: span 3; /* 세 번째 줄로 이동 */
+    }
+}
+
+/* 캐릭터 총 정보 */
+.character-container{
+   overflow : hidden;
+   position : relative;
+   border: #dee2ed solid 2px;
+  border-radius: 5px;
+  width: 235px;
+}
+
+.character-text {
+    padding : 5px;
+    background-color: rgba(0, 0, 0, 0.5); /* 배경 투명 검은색 */
+    color: white; /* 글자 색 */
+    font-size: 14px;
+    border-radius: 5px;
+    text-align: left;
+    margin: auto;
+}
+/* 캐릭터 이미지 포함 */
+.character-image-container {
+    height: 290px;
+}
+/* 캐릭터 이미지 */
+.character-image {
+    width: 100%; /* 부모 크기에 맞춤 */
+    height: 100%; /* 부모 크기에 맞춤 */
+}
+/* 일일 숙제 */
+.daily-homework{
+    margin: auto;
+    padding: 5px;
+    border: #dee2ed solid 2px;
+    font-weight: bold;
+}
+/* 에포나 의뢰 */
+.epona-request {
+    border: #dee2ed solid 2px;
+    margin: auto;
+    padding: 5px 0;
+}
+/* 카오스 던전 */
+.chaos-dungeon {
+    border: #dee2ed solid 2px;
+    margin: auto;
+    padding: 5px 0;
+}
+/* 가디언 토벌 */
+.guardian-subjugation{
+    border: #dee2ed solid 2px;
+    margin: auto;
+    padding: 5px 0;
+}
+
+/* 체크 박스 진행도 체크 */
+.checkbox-container {
+    border: #dee2ed solid 2px;
+    display : flex;
+    width : auto;
+}
+
+.checkbox {
+     width : 40px;
+    height : 25px;
+    background : white;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #e9ecef;
+    transition: background-color 0.3s;
+}
+
+.checkbox.checked {
+    background-color :green;
+}
+
+/* 주간숙제 총 정보 */
+.weekly-raid-container{
+   overflow : hidden;
+   position : relative;
+   border: #dee2ed solid 2px;
+   border-radius: 5px;
+   width: 235px;
+}
+/* 레이드 정보 수정 */
+.weekly-raid {
+    position: relative;
+    border: #dee2ed solid 2px;
+    margin: auto;
+    padding: 5px;
+    font-weight: bold;
+}
+/* 정렬 , 편집 버튼 */
+.weekly-raid-buttons{
+    margin-left: 30px; /* 버튼들을 오른쪽으로 정렬 */
+}

@@ -9,26 +9,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <!-- Font Awesome 라이브러리 사용을 위해 추가-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="homework.css" rel="stylesheet">
+    <link href="/homework/homework.css" rel="stylesheet">
 </head>
 <body>
-<script src = "homework/homework.js"></script>
+<script src = "/homework/homework.js"></script>
 <div th:replace="~{ nav/nav.html :: navbar}"></div>
 
-<h4>메인 페이지</h4>
-
-
 <!-- 캐릭터 이미지 와 정보를 API로 부터 받아서 출력 -->
-<div class="character-container">
-    <div th:each = "line, iterStat : ${playerId} " class="character-image-container" data-character="${iterStat.index}">
+<div class="character">
+    <div th:each = "line, iterStat : ${playerId} " class="character-container" data-character="${iterStat.index}">
 
         <p th:utext ="${#strings.substringBefore(line,'프로필 이미지')}" class="character-text"></p>
 
-        <div th:if="${#strings.contains(line,'프로필 이미지')}"  >
+        <div th:if="${#strings.contains(line,'프로필 이미지')}" class="character-image-container" >
             <img th:src="${#strings.substringAfter(line, '프로필 이미지')}"
              alt="캐릭터 프로필 이미지" class="character-image" >
         </div>
-        <p><input type="checkbox" name="에포나 의뢰">에포나 의로</p>
+        <!--일일 숙제-->
+        <p class="daily-homework">일일 숙제</p>
+
+        <p class="epona-request"><input type="checkbox" name="에포나 의뢰">에포나 의뢰</p>
         <div class="checkbox-container">
             <div class="checkbox" data-index="0" ></div>
             <div class="checkbox" data-index="1" ></div>
@@ -36,15 +36,48 @@
             <div class="checkbox" data-index="3"></div>
             <div class="checkbox" data-index="4" ></div>
         </div>
-        <!--데이터 정보를 저장-->
 
-        <p><input type="checkbox" name="에포나 의뢰">에포나 의로</p>
-        <p><input type="checkbox" name="에포나 의뢰">에포나 의로</p>
+        <!-- 카오스 던전 -->
+        <p class="chaos-dungeon"><input type="checkbox" name="카오스 던전">카오스 던전</p>
+        <div class="checkbox-container">
+            <div class="checkbox" data-index="0" ></div>
+            <div class="checkbox" data-index="1" ></div>
+            <div class="checkbox" data-index="2"></div>
+            <div class="checkbox" data-index="3"></div>
+            <div class="checkbox" data-index="4" ></div>
+        </div>
 
+        <!-- 가디언 토벌 -->
+        <p class="guardian-subjugation"><input type="checkbox" name="가디언 토벌">가디언 토벌</p>
+        <div class="checkbox-container">
+            <div class="checkbox" data-index="0" ></div>
+            <div class="checkbox" data-index="1" ></div>
+            <div class="checkbox" data-index="2"></div>
+            <div class="checkbox" data-index="3"></div>
+            <div class="checkbox" data-index="4" ></div>
+        </div>
+
+        <!-- 주간 숙제 -->
+        <div class="weekly-raid-container">
+            <p class="weekly-raid">
+                주간 레이드
+                <span class="weekly-raid-buttons">
+                <button>정렬</button>
+                <button>편집</button>
+            </span>
+                <br>
+
+                0 / 60,000G
+            </p>
+            <!---나중에 레벨에 맞는 주간레이드를 설정-->
+            <div>
+                1막 에기르<br>
+                노말 1 2<br>
+                23000 G
+            </div>
+        </div>
     </div>
 
-
-    <!--여기서 부터 이미지 짜르고 거기에 이름들어나가게끔 설정 밑에 체크박스하고 다만들기 -->
 
 </div>
 
