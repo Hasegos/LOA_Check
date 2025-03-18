@@ -12,19 +12,29 @@
     <link href="/homework/homework.css" rel="stylesheet">
 </head>
 <body>
-<script src = "/homework/homework.js"></script>
 <div th:replace="~{ nav/nav.html :: navbar}"></div>
 
 <!-- 캐릭터 이미지 와 정보를 API로 부터 받아서 출력 -->
 <div class="character">
-    <div th:each = "line, iterStat : ${playerId} " class="character-container" data-character="${iterStat.index}">
+<!--    <div th:each = "line, iterStat : ${playerId} " class="character-container" data-character="${iterStat.index}">-->
 
-        <p th:utext ="${#strings.substringBefore(line,'프로필 이미지')}" class="character-text"></p>
+<!--        <p th:utext ="${#strings.substringBefore(line,'프로필 이미지')}" class="character-text"></p>-->
 
-        <div th:if="${#strings.contains(line,'프로필 이미지')}" class="character-image-container" >
-            <img th:src="${#strings.substringAfter(line, '프로필 이미지')}"
-             alt="캐릭터 프로필 이미지" class="character-image" >
+<!--        <div th:if="${#strings.contains(line,'프로필 이미지')}" class="character-image-container" >-->
+<!--            <img th:src="${#strings.substringAfter(line, '프로필 이미지')}"-->
+<!--             alt="캐릭터 프로필 이미지" class="character-image" >-->
+<!--        </div>-->
+        <tbody>
+            <script type="application/json" id="characterSiblings" th:utext="${Siblings}">
+            </script>
+        </tbody>
+        <div id="characterInformation">
+
+
         </div>
+
+
+
         <!--일일 숙제-->
         <p class="daily-homework">일일 숙제</p>
 
@@ -78,7 +88,7 @@
         </div>
     </div>
 
-
+    <script src = "/homework/homework.js"></script>
 </div>
 
 

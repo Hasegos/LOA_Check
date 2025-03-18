@@ -3,6 +3,7 @@ package com.LostakTodo.lostakTodo.api;
 
 import com.LostakTodo.lostakTodo.MemberShip.UserData.User;
 import com.LostakTodo.lostakTodo.MemberShip.UserData.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 // 로스트아크 API 키 가져오기
@@ -56,10 +55,10 @@ public class LostArkAPI {
     // HTTP 메서드(GET, POST, PUT, DELETE 등) 처리할수있게 해줌
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final LostArkApiService lostArkApiService;
+    // private final LostArkApiService lostArkApiService;
 
     // 유저 통합 정보
-    public List<String> getPlayerData(String playerId, String apiKey , Authentication auth){
+    public String getPlayerData(String playerId, String apiKey , Authentication auth) {
 
         // UriComponentsBuilder.fromHttpUrl 를사용해서 기본적인 URL에 동적으로 경로를 추가
         // 해당 경로는 로스트아크 api키 사용법에 있음
@@ -75,18 +74,27 @@ public class LostArkAPI {
         // 헤더 정보를 포함시켜 외부 api에 요청하기위해서
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
+        ResponseEntity<String> response_playerId = null;
         try {
-            ResponseEntity<String> response_playerId = restTemplate.exchange(urlPlayerId, HttpMethod.GET, entity, String.class);
+            response_playerId = restTemplate.exchange(urlPlayerId, HttpMethod.GET, entity, String.class);
 
+            // 해당 정보를 그대로주기 (까지말고)
+            String responseBody = response_playerId.getBody();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString = objectMapper.writeValueAsString((responseBody));
+
+            System.out.println(responseBody);
             /* 캐릭터 정보를 List 형태로 넘겨주기 (html에서 타임리프로 쪼개서 정보를 출력) */
-            List<String> characterInfo = lostArkApiService.processCharacterInfo(response_playerId.getBody() ,auth);
+            //List<String> characterInfo = lostArkApiService.processCharacterInfo(response_playerId.getBody() ,auth);
 
-            System.out.println(characterInfo);
+            // System.out.println(characterInfo);
 
-            return characterInfo;
-        }catch(Exception e){
+            return jsonString;
+        } catch (Exception e) {
             e.printStackTrace();
-            return Collections.singletonList("해당 캐릭터 정보가 없습니다.");
+
+            return "해당 유저정보는 없습니다.";
         }
     }
 

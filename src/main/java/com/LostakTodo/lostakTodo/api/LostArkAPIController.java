@@ -1,6 +1,7 @@
 package com.LostakTodo.lostakTodo.api;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,13 +38,13 @@ public class LostArkAPIController {
             String ApiKey = userApiInformation.getApiKey();
             
             // 유저 통합 정보 가져오기
-            List<String> characterInformation = lostArkAPI.getPlayerData(playerId, ApiKey,auth);
+            String characterSiblings = lostArkAPI.getPlayerData(playerId, ApiKey,auth);
             // 만약 api 가 올바르지않을 경우 DB에 저장 X
-            if (characterInformation.equals("해당 캐릭터 정보가 없습니다.")) {
+            if (characterSiblings.equals("해당 유저정보는 없습니다.")) {
                 System.out.println("API 키가 올바르지않습니다.");
                 return "home/home.html";
             } else {
-                model.addAttribute("playerId", characterInformation);
+                model.addAttribute("Siblings", characterSiblings);
                 return "homework/homework.html";
             }
         }catch (Exception e){
@@ -70,8 +71,8 @@ public class LostArkAPIController {
         }
 
         lostArkAPI.setApiKey(API_key, auth, playerId);
-        List<String> player = lostArkAPI.getPlayerData(playerId,API_key,auth);
-        model.addAttribute("playerId",player);
+
+        model.addAttribute("playerId", lostArkAPI.getPlayerData(playerId,API_key,auth));
         return "homework/homework.html";
     }
 
